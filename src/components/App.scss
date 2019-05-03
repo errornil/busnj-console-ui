@@ -1,0 +1,40 @@
+@import 'reset';
+
+$font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+body {
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app {
+  font-family: $font-stack;
+  font-weight: normal;
+  font-size: 12pt;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5 {
+  cursor: default; /* This is intentional */
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1rem;
+  text-align: center;
+  color: #999;
+}
+
+button {
+  padding: 0.33rem 0.66rem;
+  border-radius: 0.33rem;
+  font-size: inherit;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+  background: #f9f9f9;
+}
+
+button + button {
+  margin-left: 0.66rem;
+}

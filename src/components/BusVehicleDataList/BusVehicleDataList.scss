@@ -1,0 +1,44 @@
+.BusVehicleDataWrapper {
+    display: flex;
+    align-items: stretch;
+    height: 100vh;
+}
+
+.BusVehicleDataSidebar {
+    flex: 0 0 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background: #eee;
+    border-right: 1px solid #999;
+}
+
+.BusVehicleDataPanel {
+    padding: 1rem;
+    border-bottom: 1px solid #999;
+}
+
+.BusVehicleDataTable {
+    overflow-y: scroll;
+    font-size: 8pt;
+}
+
+.VehicleTable {
+    width: 100%;
+}
+
+.VehicleTable td, 
+.VehicleTable th {
+    padding: 0.33rem;
+    border-bottom: 1px solid #999;
+}
+
+.VehicleTable th {
+    background: #ddd;
+    font-weight: bold;
+}
+
+.Stats {
+    margin-top: 0.66rem;
+    font-size: 7pt;
+}
