@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './BusVehicleDataList.scss';
+import MapView from '../../containers/MapView';
+import { WEBSOCKET_STATUS_NOT_CONNECTED, WEBSOCKET_STATUS_CONNECTED, WEBSOCKET_STATUS_CONNECTING, WEBSOCKET_STATUS_CLOSING, WEBSOCKET_STATUS_CLOSED } from '../../reducers/websocket';
 
 class BusVehicleDataList extends Component {
   componentDidMount() {
@@ -9,19 +11,23 @@ class BusVehicleDataList extends Component {
 
   getEmojiForWebsocketStatus(status) {
     switch(status) {
-      case "not_connected":
+      case WEBSOCKET_STATUS_NOT_CONNECTED:
         return "⏹"
-      case "connecting":
-        return "🔄⃣"
-      case "connected":
+      case WEBSOCKET_STATUS_CONNECTING:
+        return "🔄"
+      case WEBSOCKET_STATUS_CONNECTED:
         return "🆗"
-      case "closing":
-        return "🔄⃣"
-      case "closed":
+      case WEBSOCKET_STATUS_CLOSING:
+        return "🔄"
+      case WEBSOCKET_STATUS_CLOSED:
         return "⏹"
       default:
         return "❓"
     }
+  }
+
+  isStatus(array) {
+    return array.indexOf(this.props.websocketStatus) !== -1;
   }
 
   render() {
@@ -30,10 +36,8 @@ class BusVehicleDataList extends Component {
       <div className={styles.BusVehicleDataWrapper}>
         <div className={styles.BusVehicleDataSidebar}>
           <div className={styles.BusVehicleDataPanel}>
-            {/* <button onClick={this.props.websocketOpen} disabled="">Open</button> */}
-            <button onClick={this.props.websocketClose} disabled="">Close</button>
             <div className={styles.Stats}>
-              {this.getEmojiForWebsocketStatus(this.props.websocketStatus)}&nbsp;
+              {this.getEmojiForWebsocketStatus(this.props.websocketStatus)} {this.props.websocketStatus}&nbsp;
               🚌 {Object.keys(this.props.busVehicleData).length}&nbsp;
               📦 {this.props.messagesReceived}
             </div>
@@ -52,8 +56,8 @@ class BusVehicleDataList extends Component {
                   const val = this.props.busVehicleData[key];
                   return (
                     <tr key={key}>
-                      <td>{val.vehicleID}</td>
-                      <td>{val.route}</td>
+                      <td className={styles.CellNumber}>{val.vehicleID}</td>
+                      <td className={styles.CellNumber}>{val.route}</td>
                       <td>{val.destination}</td>
                     </tr>
                   );
@@ -63,7 +67,7 @@ class BusVehicleDataList extends Component {
           </div>
         </div>
         <div className={styles.BusVehicleDataMap}>
-          Map here
+          <MapView />
         </div>
       </div>
       /* jshint ignore:end */

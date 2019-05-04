@@ -33,6 +33,20 @@ button {
   font-size: inherit;
   box-shadow: 0 2px 2px rgba(0,0,0,0.1);
   background: #f9f9f9;
+  user-select: none;
+  -webkit-user-select: none; /* 🤷‍ */
+
+  &:focus {
+    outline: none; // outline in Chrome does not respect border-radius 😢
+  }
+
+  &:disabled {
+      background-color: #eeeeee;
+      border: 1px solid rgba(0,0,0,0.1);
+      color: #aaa;
+      cursor: not-allowed;
+      box-shadow: none;
+  }
 }
 
 button + button {

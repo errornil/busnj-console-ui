@@ -1,0 +1,26 @@
+$defaultBackground: #6288a5;
+
+.ButtonLoading {
+    background-color: rgba(255, 255, 255, 0.15);
+    background-size: 27px 27px;
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.03) 50%,
+        transparent 25%,
+        transparent 50%,
+        rgba(0, 0, 0, 0.03) 50%,
+        rgba(0, 0, 0, 0.03) 75%,
+        transparent 75%,
+        transparent
+    );
+    animation: barberpole 0.5s linear infinite;
+}
+
+@keyframes barberpole {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -27px 0px;
+    }
+}

@@ -1,25 +1,25 @@
 import { actionTypes } from '../actions';
 
-const STATUS_NOT_CONNECTED = "not_connected";
-const STATUS_CONNECTING = "connecting";
-const STATUS_CONNECTED = "connected";
-const STATUS_CLOSING = "closing";
-const STATUS_CLOSED = "closed";
+export const WEBSOCKET_STATUS_NOT_CONNECTED = "not_connected";
+export const WEBSOCKET_STATUS_CONNECTING = "connecting";
+export const WEBSOCKET_STATUS_CONNECTED = "connected";
+export const WEBSOCKET_STATUS_CLOSING = "closing";
+export const WEBSOCKET_STATUS_CLOSED = "closed";
 
 const initialState = {
-  status: STATUS_NOT_CONNECTED,
+  status: WEBSOCKET_STATUS_NOT_CONNECTED,
 };
 
 export const websocket = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.WEBSOCKET_OPEN:
-      return {...state, status: STATUS_CONNECTING};
+      return {...state, status: WEBSOCKET_STATUS_CONNECTING};
     case actionTypes.WEBSOCKET_OPENED:
-      return {...state, status: STATUS_CONNECTED};
+      return {...state, status: WEBSOCKET_STATUS_CONNECTED};
     case actionTypes.WEBSOCKET_CLOSE:
-      return {...state, status: STATUS_CLOSING};
+      return {...state, status: WEBSOCKET_STATUS_CLOSING};
     case actionTypes.WEBSOCKET_CLOSED:
-      return {...state, status: STATUS_CLOSED};
+      return {...state, status: WEBSOCKET_STATUS_CLOSED};
     default:
       return state;
   }

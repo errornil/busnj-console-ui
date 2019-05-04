@@ -5,6 +5,7 @@
 }
 
 .BusVehicleDataSidebar {
+    height: 100vh;
     flex: 0 0 450px;
     display: flex;
     flex-direction: column;
@@ -15,30 +16,75 @@
 
 .BusVehicleDataPanel {
     padding: 1rem;
-    border-bottom: 1px solid #999;
+}
+
+.Stats {
+    margin-top: 0.66rem;
+    font-size: 7pt;
 }
 
 .BusVehicleDataTable {
     overflow-y: scroll;
     font-size: 8pt;
+    border-radius: 0.33rem;
+    margin: 0.66rem;
+    border: 1px solid #aaa;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.25);
+    background: white;
+    border-radius: 0.33rem;
 }
 
 .VehicleTable {
     width: 100%;
 }
 
-.VehicleTable td, 
+.VehicleTable tr:hover {
+    background: #c0dfff;
+    cursor: pointer;
+}
+
+.VehicleTable td,
 .VehicleTable th {
     padding: 0.33rem;
-    border-bottom: 1px solid #999;
+}
+
+.VehicleTable tr:not(:first-of-type) td {
+    border-top: 1px solid #ddd;
+}
+
+.VehicleTable tr td:not(:last-of-type) {
+    border-right: 1px solid #ddd;
+}
+
+.VehicleTable tr:hover td:not(:last-of-type) {
+    border-right: 1px solid darken(#c0dfff, 10%);
+}
+
+.VehicleTable tr:hover td {
+    z-index: 2;
+    position: relative;
+    border-top: 1px solid darken(#c0dfff, 10%);
+    border-bottom: 1px solid darken(#c0dfff, 10%);
 }
 
 .VehicleTable th {
-    background: #ddd;
     font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    background: linear-gradient(180deg, #ddd, #bbb);
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    top: 0;
 }
 
-.Stats {
-    margin-top: 0.66rem;
-    font-size: 7pt;
+.VehicleTable th:first-child {
+    border-top-left-radius: 0.33rem;
+}
+
+.VehicleTable th:last-child {
+    border-top-right-radius: 0.33rem;
+}
+
+.CellNumber {
+    text-align: right;
+    font-family: 'Iosevka', 'Courier New', Courier, monospace;
 }
