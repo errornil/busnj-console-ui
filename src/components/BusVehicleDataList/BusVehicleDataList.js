@@ -7,6 +7,7 @@ import { WEBSOCKET_STATUS_NOT_CONNECTED, WEBSOCKET_STATUS_CONNECTED, WEBSOCKET_S
 class BusVehicleDataList extends Component {
   componentDidMount() {
     this.props.websocketOpen();
+    this.props.getBusVehicleData();
   }
 
   getEmojiForWebsocketStatus(status) {
@@ -52,7 +53,7 @@ class BusVehicleDataList extends Component {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(this.props.busVehicleData).map((key, i) => {
+                {Object.keys(this.props.busVehicleData).map((key) => {
                   const val = this.props.busVehicleData[key];
                   return (
                     <tr key={key}>
@@ -81,6 +82,7 @@ BusVehicleDataList.propTypes = {
   websocketStatus: PropTypes.string.isRequired,
   websocketOpen: PropTypes.func.isRequired,
   websocketClose: PropTypes.func.isRequired,
+  getBusVehicleData: PropTypes.func.isRequired,
 };
 
 export default BusVehicleDataList;

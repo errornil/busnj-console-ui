@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
   websocketOpen: () => dispatch({type: actionTypes.WEBSOCKET_OPEN}),
   websocketClose: () => dispatch({type: actionTypes.WEBSOCKET_CLOSE}),
+  getBusVehicleData: () => dispatch({type: actionTypes.BUS_VEHICLE_DATA_REQUEST}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BusVehicleDataList);

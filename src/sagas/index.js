@@ -2,17 +2,17 @@ import { all } from 'redux-saga/effects';
 import {
   watchWebsocketOpen,
   watchWebsocketOpened,
-  watchWebsocketMessage,
   watchWebsocketClose,
   watchWebsocketClosed
 } from './websocket';
+import { watchBusVehicleDataRequest } from './busVehicleData';
 
 export const rootSaga = function* () {
   yield all([
     watchWebsocketOpen,
     watchWebsocketOpened,
-    watchWebsocketMessage,
     watchWebsocketClose,
     watchWebsocketClosed,
+    watchBusVehicleDataRequest,
   ]);
 };

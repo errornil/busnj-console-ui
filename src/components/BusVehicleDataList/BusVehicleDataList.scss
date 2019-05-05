@@ -38,7 +38,11 @@
     width: 100%;
 }
 
-.VehicleTable tr:hover {
+.VehicleTable thead tr {
+    cursor: default;
+}
+
+.VehicleTable tbody tr:hover {
     background: #c0dfff;
     cursor: pointer;
 }
@@ -60,11 +64,12 @@
     border-right: 1px solid darken(#c0dfff, 10%);
 }
 
-.VehicleTable tr:hover td {
-    z-index: 2;
-    position: relative;
-    border-top: 1px solid darken(#c0dfff, 10%);
+.VehicleTable tr:hover:not(:last-of-type) td {
     border-bottom: 1px solid darken(#c0dfff, 10%);
+}
+
+.VehicleTable tr:hover:not(:first-of-type) td {
+    border-top: 1px solid darken(#c0dfff, 10%);
 }
 
 .VehicleTable th {
