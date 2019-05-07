@@ -29,6 +29,7 @@
     "emotion": "^9.2.12",
     "html-react-parser": "^0.7.0",
     "immutability-helper": "^3.0.0",
+    "mapbox-gl": "^0.54.0",
     "moment": "^2.24.0",
     "prop-types": "^15.7.1",
     "react": "^16.8.1",

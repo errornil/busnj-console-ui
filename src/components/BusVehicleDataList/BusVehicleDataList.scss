@@ -12,6 +12,12 @@
     align-items: stretch;
     background: #eee;
     border-right: 1px solid #999;
+    z-index: 2;
+}
+
+.BusVehicleDataMap {
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .BusVehicleDataPanel {
