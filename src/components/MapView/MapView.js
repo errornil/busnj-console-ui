@@ -13,7 +13,8 @@ class MapView extends Component {
     this.state = {
       lng: -74.152,
       lat: 40.762,
-      zoom: 8
+      zoom: 8,
+      hover: false
     };
   }
 
@@ -26,11 +27,13 @@ class MapView extends Component {
       zoom
     });
 
+    var hoveredVehicleId = null;
     this.map.on('load', () => {
       this.map.on('move', () => {
         const { lng, lat } = this.map.getCenter();
 
         this.setState({
+          ...this.state,
           lng: lng.toFixed(4),
           lat: lat.toFixed(4),
           zoom: this.map.getZoom().toFixed(2)
@@ -53,8 +56,47 @@ class MapView extends Component {
         type: 'circle',
         source: 'vehicles',
       }, 'country-label-lg'); // ID metches `mapbox/streets-v9`
-      this.map.setPaintProperty('vehicles', 'circle-radius', 4)
-      this.map.setPaintProperty('vehicles', 'circle-color', "#024F9B")
+      this.map.setPaintProperty(
+        'vehicles',
+        'circle-radius',
+        ["case",
+          ["boolean", ["feature-state", "hover"], false],
+          9,
+          7
+        ]
+      )
+      this.map.setPaintProperty(
+        'vehicles',
+        'circle-color',
+        ["case",
+          ["boolean", ["feature-state", "hover"], false],
+          "#024F9B",
+          "#0368CD"
+        ]
+      )
+
+      // When the user moves their mouse over the state-fill layer, we'll update the
+      // feature state for the feature under the mouse.
+      this.map.on("mousemove", "vehicles", (e) => {
+        if (e.features.length > 0) {
+          if (hoveredVehicleId) {
+            this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: false });
+          }
+          hoveredVehicleId = e.features[0].id;
+          this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: true });
+          this.setState({ ...this.state, hover: true })
+        }
+      });
+
+      // When the mouse leaves the state-fill layer, update the feature state of the
+      // previously hovered feature.
+      this.map.on("mouseleave", "vehicles", () => {
+        if (hoveredVehicleId) {
+          this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: false });
+          this.setState({ ...this.state, hover: false })
+        }
+        hoveredVehicleId = null;
+      });
     });
   }
 
@@ -63,7 +105,10 @@ class MapView extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.busVehicleData !== prevProps.busVehicleData) {
+    if (
+      this.props.busVehicleData !== prevProps.busVehicleData
+      || this.props.filteredData !== prevProps.filteredData
+    ) {
       if (this.map !== undefined && this.map.getSource('vehicles') !== undefined) {
         this.map.getSource('vehicles').setData(this.getData());
       }
@@ -71,10 +116,14 @@ class MapView extends Component {
   }
 
   getData() {
+    let query = this.props.query || "";
+    const source = (query !== "")
+      ? this.props.filteredData
+      : Object.values(this.props.busVehicleData);
+
     return {
       "type": "FeatureCollection",
-      "features": Object.keys(this.props.busVehicleData).map((key) => {
-        const val = this.props.busVehicleData[key]
+      "features": source.map((val) => {
         return {
           "type": "Feature",
           "geometry": {
@@ -87,7 +136,8 @@ class MapView extends Component {
           "properties": {
             "title": val.vehicleID,
             "icon": "bus-11"
-          }
+          },
+          "id": val.vehicleID
         }
       })
     }
@@ -98,7 +148,7 @@ class MapView extends Component {
       /* jshint ignore:start */
       <div
         ref={el => this.mapContainer = el}
-        className={styles.Map}
+        className={`${styles.Map} ${(this.state.hover) ? styles.MapHovered : ""}`}
         height='100%'>
       </div>
       /* jshint ignore:end */
@@ -108,6 +158,8 @@ class MapView extends Component {
 
 MapView.propTypes = {
   busVehicleData: PropTypes.object.isRequired,
+  filteredData: PropTypes.array.isRequired,
+  query: PropTypes.string.isRequired,
 };
 
 export default MapView;
