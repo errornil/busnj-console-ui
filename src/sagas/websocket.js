@@ -1,9 +1,10 @@
 import { takeLatest, put } from 'redux-saga/effects';
 import { connect, send, disconnect } from '@giantmachines/redux-websocket';
 import { actionTypes } from '../actions';
+import { busVehicleDataStreamPath } from '../config';
 
 export const websocketOpen = function* () {
-  yield put(connect("ws://localhost:4501/busVehicleDataStream"));
+  yield put(connect(busVehicleDataStreamPath));
 };
 
 export const websocketOpened = function* () {

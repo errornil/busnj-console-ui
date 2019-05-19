@@ -1,0 +1,43 @@
+pipeline:
+  build:
+    image: node:8
+    pull: true
+    commands:
+      - make install
+      - make test
+      - make build
+    when:
+      event: push
+
+  cr:
+    image: plugins/docker
+    registry: cr.chuhlomin.com
+    repo: cr.chuhlomin.com/busnj-console-ui
+    tag:
+      - ${DRONE_COMMIT}
+      - latest
+    username: ${DOCKER_USERNAME}
+    secrets: [ docker_password ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    secrets: [ docker_username, docker_password ]
+    when:
+      event: push
+      branch: master
+
+  deploy:
+    image: cr.chuhlomin.com/docker-run:latest
+    username: root
+    server: busnj.chuhlomin.com
+    docker_image: cr.chuhlomin.com/busnj-console-ui:${DRONE_COMMIT}
+    docker_network: beta_default
+    docker_network_alias: busnj-console-ui
+    container_name: busnj-console-ui
+    log_driver: syslog
+    expose: "80"
+    secrets:
+      - source: ssh_key
+        target: ssh_key
+    when:
+      event: push
+      branch: master

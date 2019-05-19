@@ -58,7 +58,6 @@ export const busVehicleData = (state = initialState, action) => {
 
     case BUS_VEHICLE_DATA_SET_QUERY:
       const strictComparison = action.query.charAt(0) === "=";
-      console.log(strictComparison);
       return {
         ...state,
         query: action.query,

@@ -44,22 +44,14 @@
     width: 100%;
 }
 
-.VehicleTable thead tr {
-    cursor: default;
-}
-
 .VehicleTable tbody tr:nth-child(2n) {
     background: rgba(0,0,0,0.05);
-}
-
-.VehicleTable tbody tr:hover {
-    background: #c0dfff;
-    cursor: pointer;
 }
 
 .VehicleTable td,
 .VehicleTable th {
     padding: 0.22rem 0.33rem;
+    cursor: default;
 }
 
 .VehicleTable th {
@@ -73,7 +65,6 @@
 
 .CellNumber {
     text-align: right;
-    font-family: 'Iosevka', 'Courier New', Courier, monospace;
 }
 
 .BusVehicleDataSearchInput {

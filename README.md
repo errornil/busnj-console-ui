@@ -1,8 +1,15 @@
 # BusNJ Console UI
 
-[![Build Status](https://ci.chuhlomin.com/api/badges/chuhlomin/busnj-console-ui/status.svg)](***REMOVED***/chuhlomin/busnj-console-ui)
+[![Build Status](https://ci.chuhlomin.com/api/badges/chuhlomin/busnj-console-ui/status.svg)](https://ci.chuhlomin.net/chuhlomin/busnj-console-ui)
 
 ### Project setup on a local machine
+
+#### Quickstart
+
+```
+make install
+make build build-docker run-docker
+```
 
 #### Prerequisites
 1. Node v. 8.11.3 or later version 
@@ -21,7 +28,7 @@
 `npm start`
 
 Works "best" behind [busnj-console](https://github.com/chuhlomin/busnj-console) server.
-Follow server instructions, then open [http://localhost:4501](http://localhost:4501).
+Follow server instructions, then open [http://localhost:6001](http://localhost:6001).
 
 #### Production build
 `npm run build`. It will create `dist` folder.

@@ -11,8 +11,8 @@ class MapView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lng: -74.152,
-      lat: 40.762,
+      lng: -74,
+      lat: 41,
       zoom: 8,
       hover: false
     };
@@ -24,10 +24,12 @@ class MapView extends Component {
       container: this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v9',
       center: [lng, lat],
-      zoom
+      zoom: zoom,
+      // maxBounds=[[-77, 38], [-66, 42]]
     });
 
-    var hoveredVehicleId = null;
+    let hoveredVehicleId = null;
+
     this.map.on('load', () => {
       this.map.on('move', () => {
         const { lng, lat } = this.map.getCenter();
@@ -40,45 +42,55 @@ class MapView extends Component {
         });
       });
 
-      this.map.on('render', () => {
-        this.map.resize();
-      });
+      this.map.on('render', () => { this.map.resize() });
 
       this.map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-      this.map.addSource('vehicles', {
-        type: 'geojson',
-        data: this.getData()
-      });
+      this.map.addSource('vehicles', { type: 'geojson', data: this.getData() });
 
-      this.map.addLayer({
-        id: 'vehicles',
-        type: 'circle',
-        source: 'vehicles',
-      }, 'country-label-lg'); // ID metches `mapbox/streets-v9`
+      this.map.addLayer(
+        { id: 'vehicles', type: 'circle', source: 'vehicles' },
+        'country-label-lg' // ID matches `mapbox/streets-v9`
+      );
       this.map.setPaintProperty(
         'vehicles',
         'circle-radius',
-        ["case",
-          ["boolean", ["feature-state", "hover"], false],
-          9,
-          7
-        ]
-      )
+        5
+        // ["case",
+        //   ["boolean", ["feature-state", "hover"], false],
+        //   9,
+        //   7
+        // ]
+      );
       this.map.setPaintProperty(
         'vehicles',
         'circle-color',
-        ["case",
-          ["boolean", ["feature-state", "hover"], false],
-          "#024F9B",
-          "#0368CD"
-        ]
-      )
+        "#0368CD"
+        // ["case",
+        //   ["boolean", ["feature-state", "hover"], false],
+        //   "#024F9B",
+        //   "#0368CD"
+        // ]
+      );
+      this.map.addLayer(
+        { 
+          id: 'vehicles_labels',
+          type: 'symbol',
+          source: 'vehicles',
+          layout: {
+            "text-field": "{route}",
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-size": 10,
+            "text-variable-anchor": ["left", "right", "bottom", "top"],
+            "text-radial-offset": 0.6,
+          }
+        },
+        'country-label-lg' // ID matches `mapbox/streets-v9`
+      );
 
-      // When the user moves their mouse over the state-fill layer, we'll update the
-      // feature state for the feature under the mouse.
       this.map.on("mousemove", "vehicles", (e) => {
         if (e.features.length > 0) {
+          // handle "hover" state
           if (hoveredVehicleId) {
             this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: false });
           }
@@ -88,9 +100,8 @@ class MapView extends Component {
         }
       });
 
-      // When the mouse leaves the state-fill layer, update the feature state of the
-      // previously hovered feature.
       this.map.on("mouseleave", "vehicles", () => {
+        // handle "hover" state
         if (hoveredVehicleId) {
           this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: false });
           this.setState({ ...this.state, hover: false })
@@ -134,8 +145,9 @@ class MapView extends Component {
             ]
           },
           "properties": {
-            "title": val.vehicleID,
-            "icon": "bus-11"
+            "vehicleID": val.vehicleID,
+            "route": val.route,
+            "destination": val.destination,
           },
           "id": val.vehicleID
         }
@@ -148,8 +160,9 @@ class MapView extends Component {
       /* jshint ignore:start */
       <div
         ref={el => this.mapContainer = el}
-        className={`${styles.Map} ${(this.state.hover) ? styles.MapHovered : ""}`}
-        height='100%'>
+        className={styles.Map}
+        style={{height: "100vh"}}
+        >
       </div>
       /* jshint ignore:end */
     );
