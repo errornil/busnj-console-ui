@@ -9,4 +9,4 @@ export const busVehicleDataPath = basePath + "/busVehicleData";
 
 export const busVehicleDataStreamPath = isLocalhost
     ? 'ws://localhost:6001/busVehicleDataStream'
-    : 'ws://console.busnj.chuhlomin.com/busVehicleDataStream';
+    : 'wss://console.busnj.chuhlomin.com/busVehicleDataStream';
