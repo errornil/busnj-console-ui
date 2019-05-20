@@ -25,7 +25,7 @@ class MapView extends Component {
       style: 'mapbox://styles/mapbox/streets-v9',
       center: [lng, lat],
       zoom: zoom,
-      // maxBounds=[[-77, 38], [-66, 42]]
+      maxBounds: [[-77, 38], [-72, 42]]
     });
 
     let hoveredVehicleId = null;
