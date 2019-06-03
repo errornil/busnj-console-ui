@@ -8,7 +8,7 @@
 
 ```
 make install
-make build build-docker run-docker
+make run
 ```
 
 #### Prerequisites

@@ -1,18 +1,19 @@
-import { BUS_VEHICLE_DATA_REQUEST, BUS_VEHICLE_DATA_FAILURE, BUS_VEHICLE_DATA_SUCCESS, BUS_VEHICLE_DATA_SET_QUERY } from "../actions/actionTypes";
+import { BUS_VEHICLE_DATA_REQUEST, BUS_VEHICLE_DATA_FAILURE, BUS_VEHICLE_DATA_SUCCESS, BUS_VEHICLE_DATA_SET_QUERY, BUS_VEHICLE_SELECT, BUS_VEHICLE_UNSELECT, REDUX_WEBSOCKET_MESSAGE } from "../actions/actionTypes";
 
 const initialState = {
   latestData: {},
   filteredData: [],
   messagesReceived: 0,
   isLoading: false,
-  query: "",
+  query: '',
+  selectedVehicle: '',
 };
 
 export const busVehicleData = (state = initialState, action) => {
   switch (action.type) {
-    case "REDUX_WEBSOCKET::MESSAGE":
-      const data = action.payload.message.split("\n").map((s) => JSON.parse(s));
-      let newDataRows = [];
+    case REDUX_WEBSOCKET_MESSAGE:
+      var data = action.payload.message.split("\n").map((s) => JSON.parse(s));
+      var newDataRows = [];
       for (let i = 0; i < data.length; i++) {
         newDataRows[data[i].vehicleID] = data[i];
       }
@@ -33,11 +34,11 @@ export const busVehicleData = (state = initialState, action) => {
       }
 
     case BUS_VEHICLE_DATA_SUCCESS:
-      let newData = state.latestData;
+      var newData = state.latestData;
 
-      Object.keys(action.data).forEach((key, i) => {
+      Object.keys(action.data).forEach((key) => {
         if (!newData.hasOwnProperty(key)) {
-          newData[key] = action.data[key]
+          newData[action.data[key].vehicleID] = action.data[key]
         }
       });
 
@@ -57,7 +58,7 @@ export const busVehicleData = (state = initialState, action) => {
       }
 
     case BUS_VEHICLE_DATA_SET_QUERY:
-      const strictComparison = action.query.charAt(0) === "=";
+      var strictComparison = action.query.charAt(0) === "=";
       return {
         ...state,
         query: action.query,
@@ -75,6 +76,18 @@ export const busVehicleData = (state = initialState, action) => {
             || item.destination.toLowerCase().indexOf(action.query.toLowerCase()) !== -1
           )
         })
+      }
+
+    case BUS_VEHICLE_SELECT:
+      return {
+        ...state,
+        selectedVehicle: action.vehicleID,
+      }
+    
+    case BUS_VEHICLE_UNSELECT:
+      return {
+        ...state,
+        selectedVehicle: '',
       }
 
     default:

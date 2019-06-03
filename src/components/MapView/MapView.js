@@ -25,7 +25,8 @@ class MapView extends Component {
       style: 'mapbox://styles/mapbox/streets-v9',
       center: [lng, lat],
       zoom: zoom,
-      maxBounds: [[-77, 38], [-72, 42]]
+      maxBounds: [[-77, 38], [-72, 42]],
+      logoPosition: 'bottom-right',
     });
 
     let hoveredVehicleId = null;
@@ -65,7 +66,7 @@ class MapView extends Component {
       this.map.setPaintProperty(
         'vehicles',
         'circle-color',
-        "#0368CD"
+        "#508BF7"
         // ["case",
         //   ["boolean", ["feature-state", "hover"], false],
         //   "#024F9B",
@@ -119,6 +120,7 @@ class MapView extends Component {
     if (
       this.props.busVehicleData !== prevProps.busVehicleData
       || this.props.filteredData !== prevProps.filteredData
+      || this.props.selectedVehicle !== prevProps.selectedVehicle
     ) {
       if (this.map !== undefined && this.map.getSource('vehicles') !== undefined) {
         this.map.getSource('vehicles').setData(this.getData());
@@ -126,11 +128,23 @@ class MapView extends Component {
     }
   }
 
+  pickSource() {
+    if (this.props.selectedVehicle != '') {
+      return [
+        this.props.busVehicleData[this.props.selectedVehicle]
+      ];
+    }
+
+    let query = this.props.query || '';
+    if (query !== '') {
+      return this.props.filteredData;
+    }
+
+    return Object.values(this.props.busVehicleData);
+  }
+
   getData() {
-    let query = this.props.query || "";
-    const source = (query !== "")
-      ? this.props.filteredData
-      : Object.values(this.props.busVehicleData);
+    const source = this.pickSource()
 
     return {
       "type": "FeatureCollection",
@@ -172,6 +186,7 @@ class MapView extends Component {
 MapView.propTypes = {
   busVehicleData: PropTypes.object.isRequired,
   filteredData: PropTypes.array.isRequired,
+  selectedVehicle: PropTypes.string.isRequired,
   query: PropTypes.string.isRequired,
 };
 

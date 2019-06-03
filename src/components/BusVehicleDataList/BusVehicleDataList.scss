@@ -1,22 +1,22 @@
 .BusVehicleDataWrapper {
-    display: flex;
-    align-items: stretch;
     height: 100vh;
 }
 
 .BusVehicleDataSidebar {
-    height: 100vh;
-    flex: 0 0 450px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    background: #eee;
-    border-right: 1px solid #999;
+    max-height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    box-sizing: border-box;
+    border: 1px solid #999999;
+    background: rgba(255,255,255,0.8);
     z-index: 2;
 }
 
 .BusVehicleDataMap {
-    flex-grow: 1;
     overflow: hidden;
 }
 
@@ -29,47 +29,64 @@
     font-size: 7pt;
 }
 
-.BusVehicleDataTable {
-    height: 100%;
-    overflow-y: scroll;
-    font-size: 8pt;
-    border-radius: 0.11rem;
-    margin: 0 0.66rem 0.66rem;
-    border: 1px solid #aaa;
-    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.25);
-    background: white;
-}
-
-.VehicleTable {
-    width: 100%;
-}
-
-.VehicleTable tbody tr:nth-child(2n) {
-    background: rgba(0,0,0,0.05);
-}
-
-.VehicleTable td,
-.VehicleTable th {
-    padding: 0.22rem 0.33rem;
-    cursor: default;
-}
-
-.VehicleTable th {
-    font-weight: bold;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-    background: linear-gradient(180deg, #ddd, #bbb);
-    position: -webkit-sticky; /* for Safari */
-    position: sticky;
-    top: 0;
-}
-
-.CellNumber {
-    text-align: right;
-}
-
 .BusVehicleDataSearchInput {
     display: block;
-    width: 100%;
     box-sizing: border-box;
+    width: 100%;
+    padding: 0.33rem 0.66rem;
     font-size: 14pt;
+    border: 0;
+    background: transparent;
+}
+
+.BusVehicleDataSearchResults {
+    max-height: calc(100%);
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    border-top: 1px solid #999999;
+    font-size: 11pt;
+
+    .Row {
+        cursor: pointer;
+    }
+
+    .Row:hover {
+        background: rgba(80, 139, 247, 0.25);
+    }
+}
+
+.BusVehicleDataSelectedVehicle {
+    border-top: 0;
+
+    .SelectedVehicle {
+        border-top: 1px solid #999999;
+    }
+}
+
+.BusVehicleDataNav {
+    font-size: 14pt;
+
+    .Back {
+        height: 50px;
+        display: inline-block;
+        padding: 0 0.6rem;
+        text-decoration: none;
+    }
+}
+
+.BusVehicleDataNav,
+.BusVehicleDataSearchInput {
+    box-sizing: border-box;
+    height: 50px;
+    line-height: 50px;
+}
+
+.Row {
+    padding: 0.33rem 0.66rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    font-size: 11pt;
+}
+
+.Details {
+    font-size: 0.75rem;
 }
