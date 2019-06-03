@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { actionTypes } from '../actions';
 import MapView from '../components/MapView/MapView';
 
 const mapStateToProps = state => ({
@@ -8,4 +9,8 @@ const mapStateToProps = state => ({
   selectedVehicle: state.busVehicleData.selectedVehicle,
 });
 
-export default connect(mapStateToProps, null)(MapView);
+const mapDispatchToProps = (dispatch) => ({
+  selectVehicle: (vehicleID) => dispatch({type: actionTypes.BUS_VEHICLE_SELECT, vehicleID}),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapView);

@@ -14,8 +14,12 @@ class MapView extends Component {
       lng: -74,
       lat: 41,
       zoom: 8,
-      hover: false
+      hoveredVehicleID: null,
     };
+  }
+
+  selectVehicle(vehicleID) {
+    this.props.selectVehicle(vehicleID);
   }
 
   componentDidMount() {
@@ -28,8 +32,6 @@ class MapView extends Component {
       maxBounds: [[-77, 38], [-72, 42]],
       logoPosition: 'bottom-right',
     });
-
-    let hoveredVehicleId = null;
 
     this.map.on('load', () => {
       this.map.on('move', () => {
@@ -56,25 +58,23 @@ class MapView extends Component {
       this.map.setPaintProperty(
         'vehicles',
         'circle-radius',
-        5
-        // ["case",
-        //   ["boolean", ["feature-state", "hover"], false],
-        //   9,
-        //   7
-        // ]
+        ["case",
+          ["boolean", ["feature-state", "hover"], false],
+          7,
+          5
+        ]
       );
       this.map.setPaintProperty(
         'vehicles',
         'circle-color',
-        "#508BF7"
-        // ["case",
-        //   ["boolean", ["feature-state", "hover"], false],
-        //   "#024F9B",
-        //   "#0368CD"
-        // ]
+        ["case",
+          ["boolean", ["feature-state", "hover"], false],
+          "#024F9B",
+          "#508BF7"
+        ]
       );
       this.map.addLayer(
-        { 
+        {
           id: 'vehicles_labels',
           type: 'symbol',
           source: 'vehicles',
@@ -89,25 +89,49 @@ class MapView extends Component {
         'country-label-lg' // ID matches `mapbox/streets-v9`
       );
 
-      this.map.on("mousemove", "vehicles", (e) => {
-        if (e.features.length > 0) {
-          // handle "hover" state
-          if (hoveredVehicleId) {
-            this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: false });
-          }
-          hoveredVehicleId = e.features[0].id;
-          this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: true });
-          this.setState({ ...this.state, hover: true })
+      this.map.on('mouseenter', 'vehicles', (event) => {
+        this.map.getCanvas().style.cursor = 'pointer';
+
+        // handle "hover" state
+        if (this.state.hoveredVehicleID !== null) {
+          this.map.setFeatureState(
+            { source: 'vehicles', id: this.state.hoveredVehicleID },
+            { hover: false }
+          );
         }
+
+        this.setState(
+          {
+            ...this.state,
+            hoveredVehicleID: event.features[0].id
+          }
+        )
+
+        this.map.setFeatureState(
+          { source: 'vehicles', id: this.state.hoveredVehicleID },
+          { hover: true }
+        );
       });
 
       this.map.on("mouseleave", "vehicles", () => {
-        // handle "hover" state
-        if (hoveredVehicleId) {
-          this.map.setFeatureState({ source: 'vehicles', id: hoveredVehicleId }, { hover: false });
-          this.setState({ ...this.state, hover: false })
+        this.map.getCanvas().style.cursor = '';
+
+        if (this.state.hoveredVehicleID !== null) {
+          this.map.setFeatureState(
+            { source: 'vehicles', id: this.state.hoveredVehicleID },
+            { hover: false }
+          );
+          this.setState(
+            {
+              ...this.state,
+              hoveredVehicleID: null
+            }
+          )
         }
-        hoveredVehicleId = null;
+      });
+
+      this.map.on('click', 'vehicles', (event) => {
+        this.props.selectVehicle(event.features[0].properties.vehicleID);
       });
     });
   }
@@ -175,8 +199,8 @@ class MapView extends Component {
       <div
         ref={el => this.mapContainer = el}
         className={styles.Map}
-        style={{height: "100vh"}}
-        >
+        style={{ height: "100vh" }}
+      >
       </div>
       /* jshint ignore:end */
     );
@@ -188,6 +212,7 @@ MapView.propTypes = {
   filteredData: PropTypes.array.isRequired,
   selectedVehicle: PropTypes.string.isRequired,
   query: PropTypes.string.isRequired,
+  selectVehicle: PropTypes.func.isRequired,
 };
 
 export default MapView;
