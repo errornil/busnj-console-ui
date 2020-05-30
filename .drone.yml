@@ -65,4 +65,4 @@ trigger:
     - master
 
 image_pull_secrets:
-- dockerconfigjson
+  - dockerconfigjson
