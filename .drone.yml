@@ -12,9 +12,9 @@ steps:
     image: node:14.3.0-alpine3.11
     pull: if-not-exists
     commands:
-      - make install
-      - make test
-      - make build
+      - npm run install
+      - npm run test
+      - npm run build
     when:
       event:
         - push
