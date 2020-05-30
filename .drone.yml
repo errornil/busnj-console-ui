@@ -9,8 +9,8 @@ platform:
 
 steps:
   - name: build
-    pull: always
-    image: node:8
+    image: node:14.3.0-alpine3.11
+    pull: if-not-exists
     commands:
       - make install
       - make test
@@ -20,8 +20,8 @@ steps:
         - push
 
   - name: cr
-    pull: if-not-exists
     image: plugins/docker
+    pull: if-not-exists
     settings:
       registry: cr.chuhlomin.com
       repo: cr.chuhlomin.com/transit-server
