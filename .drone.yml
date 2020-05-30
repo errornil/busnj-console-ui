@@ -12,7 +12,7 @@ steps:
     image: node:14.3.0-alpine3.11
     pull: if-not-exists
     commands:
-      - npm run install
+      - npm install
       - npm run test
       - npm run build
     when:
