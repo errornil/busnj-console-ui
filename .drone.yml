@@ -1,43 +1,68 @@
-pipeline:
-  build:
+---
+kind: pipeline
+type: docker
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: build
+    pull: always
     image: node:8
-    pull: true
     commands:
       - make install
       - make test
       - make build
     when:
-      event: push
+      event:
+        - push
 
-  cr:
+  - name: cr
+    pull: if-not-exists
     image: plugins/docker
-    registry: cr.chuhlomin.com
-    repo: cr.chuhlomin.com/busnj-console-ui
-    tag:
-      - ${DRONE_COMMIT}
-      - latest
-    username: ${DOCKER_USERNAME}
-    secrets: [ docker_password ]
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    secrets: [ docker_username, docker_password ]
+    settings:
+      registry: cr.chuhlomin.com
+      repo: cr.chuhlomin.com/transit-server
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      context: ./cmd/server
+      dockerfile: cmd/server/Dockerfile
+      tags:
+        - ${DRONE_COMMIT}
+        - latest
     when:
-      event: push
-      branch: master
+      event:
+        - push
+      branch:
+        - master
 
-  deploy:
+  - name: deploy
     image: cr.chuhlomin.com/docker-run:latest
-    username: root
-    server: busnj.chuhlomin.com
-    docker_image: cr.chuhlomin.com/busnj-console-ui:${DRONE_COMMIT}
-    docker_network: beta_default
-    docker_network_alias: busnj-console-ui
-    container_name: busnj-console-ui
-    log_driver: syslog
-    expose: "80"
-    secrets:
-      - source: ssh_key
-        target: ssh_key
+    pull: if-not-exists
+    settings:
+      server: delta.chuhlomin.com
+      username: drone
+      sudo: true
+      docker_image: cr.chuhlomin.com/busnj-console-ui:${DRONE_COMMIT}
+      docker_network: delta_default
+      docker_network_alias: busnj-console-ui
+      expose: "80"
+    environment:
+      SSH_KEY:
+        from_secret: ssh_key
     when:
-      event: push
-      branch: master
+      event:
+        - push
+      branch:
+        - master
+
+trigger:
+  branch:
+    - master
+
+image_pull_secrets:
+- dockerconfigjson
