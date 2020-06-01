@@ -24,7 +24,7 @@ steps:
     pull: if-not-exists
     settings:
       registry: cr.chuhlomin.com
-      repo: cr.chuhlomin.com/transit-server
+      repo: cr.chuhlomin.com/busnj-console-ui
       username:
         from_secret: docker_username
       password:
