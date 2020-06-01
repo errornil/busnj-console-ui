@@ -1,6 +1,6 @@
 # BusNJ Console UI
 
-[![Build Status](https://ci.chuhlomin.com/api/badges/chuhlomin/busnj-console-ui/status.svg)](https://ci.chuhlomin.com/chuhlomin/busnj-console-ui)
+[![Build Status](https://ci.chuhlomin.com/api/badges/errornil/busnj-console-ui/status.svg)](https://ci.chuhlomin.com/errornil/busnj-console-ui)
 
 ### Project setup on a local machine
 

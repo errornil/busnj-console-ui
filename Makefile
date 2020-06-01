@@ -16,5 +16,5 @@ build-docker:
 run-docker:
 	@docker run --name busnj-console-ui \
 		--rm \
-		--network busnj-network \
+		--network ${NETWORK} \
 		busnj-console-ui:latest;
