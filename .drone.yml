@@ -49,6 +49,9 @@ steps:
       docker_network: delta_default
       docker_network_alias: busnj-console-ui
       expose: "80"
+      labels:
+        caddy: console.busnj.chuhlomin.com
+        caddy.reverse_proxy: busnj-console-ui:80
     environment:
       SSH_KEY:
         from_secret: ssh_key
