@@ -24,7 +24,7 @@
   "homepage": "https://github.com/chuhlomin/busnj-console-ui#readme",
   "dependencies": {
     "@giantmachines/redux-websocket": "^1.2.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "dot-prop-immutable": "^1.6.0",
     "emotion": "^9.2.12",
     "html-react-parser": "^0.7.1",
