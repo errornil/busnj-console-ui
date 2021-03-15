@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import mapboxgl from 'mapbox-gl'
 import styles from './MapView.scss'
-import mapbox_access_token from '../../config'
+import { mapbox_access_token } from '../../config'
 
 mapboxgl.accessToken = mapbox_access_token;
 
