@@ -10,3 +10,5 @@ export const busVehicleDataPath = basePath + "/busVehicleData";
 export const busVehicleDataStreamPath = isLocalhost
     ? 'ws://localhost:6001/busVehicleDataStream'
     : 'wss://console.busnj.chuhlomin.com/busVehicleDataStream';
+
+export const mapbox_access_token = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;

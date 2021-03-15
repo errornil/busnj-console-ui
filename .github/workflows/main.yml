@@ -30,6 +30,8 @@ jobs:
       - run: npm install
       - run: npm run test
       - run: npm run build
+        env:
+          REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
 
       - name: Login to CR
         uses: docker/login-action@v1

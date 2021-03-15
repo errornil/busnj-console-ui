@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import mapboxgl from 'mapbox-gl'
 import styles from './MapView.scss'
+import mapbox_access_token from '../../config'
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiY2h1aGxvbWluIiwiYSI6ImNpaXBiNnBsdTAxbzF0cmtucmEwM2Y0cWoifQ.wBWKRFpAiP9GOaqadZryAQ';
+mapboxgl.accessToken = mapbox_access_token;
 
 class MapView extends Component {
   map;
