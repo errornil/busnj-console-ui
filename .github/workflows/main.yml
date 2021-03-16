@@ -32,6 +32,8 @@ jobs:
       - run: npm run build
         env:
           REACT_APP_MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+          REACT_APP_BUS_VEHICLE_DATA: https://console.busnj.chuhlomin.com/busVehicleData
+          REACT_APP_BUS_VEHICLE_DATA_STREAM: wss://console.busnj.chuhlomin.com/busVehicleDataStream
 
       - name: Login to CR
         uses: docker/login-action@v1

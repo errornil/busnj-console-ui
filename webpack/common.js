@@ -41,7 +41,12 @@ module.exports = {
       template: path.join(__dirname, '../src/index.html'),
       favicon: path.join(__dirname, '../src/favicon.png')
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.EnvironmentPlugin([
+      'REACT_APP_BUS_VEHICLE_DATA',
+      'REACT_APP_BUS_VEHICLE_DATA_STREAM',
+      'REACT_APP_MAPBOX_ACCESS_TOKEN'
+    ])
   ],
 
   output: {
