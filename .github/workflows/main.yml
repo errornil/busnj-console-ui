@@ -49,4 +49,5 @@ jobs:
           vars: |
             app: busnj-console-ui
             image: ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+            replicas: 1
           rollout_status_wait: deployment/busnj-console-ui
